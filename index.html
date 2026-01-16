@@ -314,6 +314,25 @@
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
+        .cover-image {
+            width: 320px;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow:
+                0 0 60px var(--gold-glow),
+                0 0 100px rgba(123, 94, 167, 0.3),
+                0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            animation: coverFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes coverFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.02); }
+        }
+
         .cover h1 {
             font-family: 'Cinzel', serif;
             font-size: 4rem;
@@ -764,6 +783,7 @@
             <svg class="cover-pentagram" viewBox="0 0 100 100">
                 <polygon points="50,5 61,40 97,40 68,62 79,97 50,75 21,97 32,62 3,40 39,40" fill="none" stroke="currentColor" stroke-width="0.5" style="color: var(--gold)"/>
             </svg>
+            <img src="images/cover.png" alt="CLAVICULA NOVA" class="cover-image" onerror="this.style.display='none'">
             <div class="cover-symbol">🔑</div>
             <h1>CLAVICULA NOVA</h1>
             <h2>Ключ Живого Огня</h2>
