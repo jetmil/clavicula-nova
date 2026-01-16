@@ -4,19 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLAVICULA NOVA — Ключ Живого Огня</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Philosopher:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Philosopher:wght@400;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0a0a0f;
-            --bg-card: #12121a;
-            --bg-hover: #1a1a25;
-            --gold: #c9a227;
-            --gold-light: #e6c85a;
-            --silver: #a8b5c4;
-            --text: #d4d4dc;
-            --text-dim: #8a8a9a;
-            --purple: #6b4c9a;
-            --red: #8b3a3a;
+            --bg-dark: #050508;
+            --bg-card: rgba(15, 15, 25, 0.7);
+            --bg-glass: rgba(20, 20, 35, 0.4);
+            --bg-hover: rgba(30, 30, 50, 0.6);
+            --gold: #d4af37;
+            --gold-light: #f4d160;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --silver: #b8c5d6;
+            --text: #e8e8f0;
+            --text-dim: #8a8aa0;
+            --purple: #7b5ea7;
+            --purple-glow: rgba(123, 94, 167, 0.3);
+            --red: #a04040;
+            --cyan: #4a9eb8;
         }
 
         * {
@@ -25,53 +29,100 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Cormorant Garamond', Georgia, serif;
             background: var(--bg-dark);
             color: var(--text);
             min-height: 100vh;
-            line-height: 1.8;
-            font-size: 18px;
+            line-height: 1.85;
+            font-size: 19px;
+            overflow-x: hidden;
         }
 
-        /* Магический фон */
-        body::before {
-            content: '';
+        /* Animated magical background */
+        .magic-bg {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
+            z-index: -2;
             background:
-                radial-gradient(ellipse at 20% 20%, rgba(107, 76, 154, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(201, 162, 39, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(139, 58, 58, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: -1;
+                radial-gradient(ellipse 80% 50% at 20% 30%, rgba(123, 94, 167, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse 100% 100% at 50% 50%, rgba(74, 158, 184, 0.05) 0%, transparent 70%);
+            animation: bgPulse 20s ease-in-out infinite;
         }
 
-        /* Навигация */
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 15s infinite;
+            box-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Glassmorphism nav */
         .nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(10, 10, 15, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
             padding: 1rem 2rem;
             z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
         .nav-title {
-            font-family: 'Philosopher', serif;
-            font-size: 1.5rem;
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
             color: var(--gold);
             text-decoration: none;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px var(--gold-glow);
+            transition: all 0.3s;
+        }
+
+        .nav-title:hover {
+            text-shadow: 0 0 30px var(--gold);
         }
 
         .nav-controls {
@@ -81,34 +132,42 @@
         }
 
         .nav-btn {
-            background: transparent;
-            border: 1px solid var(--gold);
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
             color: var(--gold);
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             cursor: pointer;
-            font-family: 'Philosopher', serif;
-            font-size: 0.9rem;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
             transition: all 0.3s;
+            border-radius: 4px;
         }
 
         .nav-btn:hover {
-            background: var(--gold);
-            color: var(--bg-dark);
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--gold);
+            box-shadow: 0 0 20px var(--gold-glow);
+            transform: translateY(-2px);
         }
 
-        /* Боковая панель - оглавление */
+        /* Glassmorphism sidebar */
         .sidebar {
             position: fixed;
-            top: 60px;
+            top: 65px;
             left: 0;
             bottom: 0;
-            width: 320px;
-            background: var(--bg-card);
-            border-right: 1px solid rgba(201, 162, 39, 0.2);
+            width: 350px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-right: 1px solid rgba(212, 175, 55, 0.15);
             overflow-y: auto;
             transform: translateX(-100%);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 90;
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.4);
         }
 
         .sidebar.open {
@@ -116,15 +175,32 @@
         }
 
         .sidebar-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+            background: rgba(212, 175, 55, 0.05);
         }
 
         .sidebar-header h2 {
-            font-family: 'Philosopher', serif;
+            font-family: 'Cinzel', serif;
             color: var(--gold);
-            font-size: 1.2rem;
-            letter-spacing: 1px;
+            font-size: 1rem;
+            letter-spacing: 3px;
+        }
+
+        .toc-search {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            margin-top: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 4px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .toc-search::placeholder {
+            color: var(--text-dim);
         }
 
         .toc-list {
@@ -133,11 +209,24 @@
         }
 
         .toc-item {
-            padding: 0.8rem 1.5rem;
+            padding: 0.9rem 2rem;
             cursor: pointer;
             border-left: 3px solid transparent;
             transition: all 0.3s;
             font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toc-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1), transparent);
+            transition: width 0.3s;
         }
 
         .toc-item:hover {
@@ -145,96 +234,195 @@
             border-left-color: var(--gold);
         }
 
+        .toc-item:hover::before {
+            width: 100%;
+        }
+
         .toc-item.active {
-            background: rgba(201, 162, 39, 0.1);
+            background: rgba(212, 175, 55, 0.1);
             border-left-color: var(--gold);
             color: var(--gold);
         }
 
         .toc-item-num {
             color: var(--text-dim);
-            margin-right: 0.5rem;
-            font-size: 0.85rem;
+            margin-right: 0.8rem;
+            font-size: 0.8rem;
+            font-family: 'Cinzel', serif;
         }
 
-        /* Основной контент */
+        /* Main content */
         .main {
-            margin-top: 60px;
+            margin-top: 65px;
             padding: 3rem;
-            max-width: 800px;
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
+            transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .main.sidebar-open {
-            margin-left: 320px;
+            margin-left: 350px;
         }
 
-        /* Обложка */
+        /* Animated cover */
         .cover {
             text-align: center;
             padding: 4rem 2rem;
-            min-height: calc(100vh - 60px);
+            min-height: calc(100vh - 65px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         .cover-symbol {
-            font-size: 5rem;
+            font-size: 8rem;
             color: var(--gold);
             margin-bottom: 2rem;
-            text-shadow: 0 0 30px rgba(201, 162, 39, 0.5);
+            text-shadow: 0 0 60px var(--gold-glow);
+            animation: symbolPulse 4s ease-in-out infinite, symbolRotate 20s linear infinite;
+            position: relative;
+        }
+
+        @keyframes symbolPulse {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.05); filter: brightness(1.2); }
+        }
+
+        @keyframes symbolRotate {
+            0% { text-shadow: 0 0 60px var(--gold-glow), 0 0 100px var(--purple-glow); }
+            33% { text-shadow: 0 0 80px var(--purple-glow), 0 0 120px var(--gold-glow); }
+            66% { text-shadow: 0 0 70px var(--gold-glow), 0 0 90px rgba(74, 158, 184, 0.3); }
+            100% { text-shadow: 0 0 60px var(--gold-glow), 0 0 100px var(--purple-glow); }
+        }
+
+        .cover-pentagram {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            animation: pentagramSpin 60s linear infinite;
+        }
+
+        @keyframes pentagramSpin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         .cover h1 {
-            font-family: 'Philosopher', serif;
-            font-size: 3.5rem;
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
             color: var(--gold);
-            letter-spacing: 8px;
+            letter-spacing: 12px;
             margin-bottom: 1rem;
             text-transform: uppercase;
+            text-shadow: 0 0 40px var(--gold-glow);
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 40px var(--gold-glow); }
+            50% { text-shadow: 0 0 60px var(--gold), 0 0 80px var(--gold-glow); }
         }
 
         .cover h2 {
-            font-family: 'Philosopher', serif;
+            font-family: 'Cinzel', serif;
             font-size: 1.8rem;
             color: var(--silver);
-            letter-spacing: 4px;
+            letter-spacing: 6px;
             margin-bottom: 2rem;
+            font-weight: 400;
         }
 
         .cover-tagline {
             font-style: italic;
             color: var(--text-dim);
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 3rem;
+            max-width: 500px;
+        }
+
+        .cover-stats {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .cover-stat {
+            text-align: center;
+        }
+
+        .cover-stat-num {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            display: block;
+        }
+
+        .cover-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
         }
 
         .cover-btn {
             display: inline-block;
-            padding: 1rem 3rem;
+            padding: 1.2rem 4rem;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
             border: 2px solid var(--gold);
             color: var(--gold);
             text-decoration: none;
-            font-family: 'Philosopher', serif;
+            font-family: 'Cinzel', serif;
             font-size: 1.1rem;
-            letter-spacing: 2px;
-            transition: all 0.3s;
+            letter-spacing: 4px;
+            transition: all 0.4s;
             cursor: pointer;
-            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--gold);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s;
+            z-index: -1;
         }
 
         .cover-btn:hover {
-            background: var(--gold);
             color: var(--bg-dark);
-            box-shadow: 0 0 30px rgba(201, 162, 39, 0.4);
+            box-shadow: 0 0 50px var(--gold-glow);
+            transform: translateY(-3px);
         }
 
-        /* Глава */
+        .cover-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        /* Chapter styling */
         .chapter {
             display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .chapter.active {
@@ -245,117 +433,198 @@
             text-align: center;
             margin-bottom: 3rem;
             padding-bottom: 2rem;
-            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: relative;
+        }
+
+        .chapter-header::after {
+            content: '✧';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gold);
+            background: var(--bg-dark);
+            padding: 0 1rem;
         }
 
         .chapter-num {
-            font-family: 'Philosopher', serif;
+            font-family: 'Cinzel', serif;
             color: var(--text-dim);
-            font-size: 0.9rem;
-            letter-spacing: 3px;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
             margin-bottom: 1rem;
         }
 
         .chapter-title {
-            font-family: 'Philosopher', serif;
-            font-size: 2rem;
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
             color: var(--gold);
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 30px var(--gold-glow);
         }
 
         .chapter-content {
             text-align: justify;
+            hyphens: auto;
         }
 
         .chapter-content h2 {
-            font-family: 'Philosopher', serif;
+            font-family: 'Cinzel', serif;
             color: var(--gold-light);
-            font-size: 1.5rem;
-            margin: 2.5rem 0 1.5rem;
-            letter-spacing: 1px;
+            font-size: 1.6rem;
+            margin: 3rem 0 1.5rem;
+            letter-spacing: 2px;
+            border-left: 3px solid var(--gold);
+            padding-left: 1rem;
         }
 
         .chapter-content h3 {
             font-family: 'Philosopher', serif;
             color: var(--silver);
-            font-size: 1.3rem;
+            font-size: 1.35rem;
+            margin: 2.5rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .chapter-content h4 {
+            font-family: 'Philosopher', serif;
+            color: var(--purple);
+            font-size: 1.15rem;
             margin: 2rem 0 1rem;
         }
 
         .chapter-content p {
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.4rem;
         }
 
-        .chapter-content blockquote {
-            border-left: 3px solid var(--gold);
-            padding-left: 1.5rem;
-            margin: 1.5rem 0;
-            font-style: italic;
+        .chapter-content strong {
+            color: var(--gold-light);
+        }
+
+        .chapter-content em {
             color: var(--silver);
         }
 
+        .chapter-content blockquote {
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--silver);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
         .chapter-content ul, .chapter-content ol {
-            margin: 1rem 0 1rem 2rem;
+            margin: 1.5rem 0 1.5rem 1.5rem;
         }
 
         .chapter-content li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.7rem;
+            position: relative;
         }
 
-        .chapter-content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-size: 0.95rem;
-        }
-
-        .chapter-content th, .chapter-content td {
-            border: 1px solid rgba(201, 162, 39, 0.3);
-            padding: 0.75rem;
-            text-align: left;
-        }
-
-        .chapter-content th {
-            background: rgba(201, 162, 39, 0.1);
+        .chapter-content ul li::marker {
             color: var(--gold);
         }
 
+        /* TABLES - Fixed styling */
+        .chapter-content table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 2rem 0;
+            font-size: 0.95rem;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .chapter-content thead {
+            background: rgba(212, 175, 55, 0.15);
+        }
+
+        .chapter-content th {
+            padding: 1rem 1.2rem;
+            text-align: left;
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .chapter-content td {
+            padding: 0.9rem 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: top;
+        }
+
+        .chapter-content tr:last-child td {
+            border-bottom: none;
+        }
+
+        .chapter-content tbody tr:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
         .chapter-content code {
-            background: var(--bg-hover);
-            padding: 0.2rem 0.5rem;
-            border-radius: 3px;
+            background: rgba(123, 94, 167, 0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
             font-size: 0.9rem;
+            color: var(--cyan);
+        }
+
+        .chapter-content pre {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(123, 94, 167, 0.2);
         }
 
         .chapter-content hr {
             border: none;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
-            margin: 2rem 0;
+            margin: 3rem 0;
         }
 
-        /* Навигация по главам */
+        /* Chapter navigation */
         .chapter-nav {
             display: flex;
             justify-content: space-between;
             margin-top: 4rem;
             padding-top: 2rem;
-            border-top: 1px solid rgba(201, 162, 39, 0.2);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            gap: 1rem;
         }
 
         .chapter-nav-btn {
-            background: transparent;
-            border: 1px solid var(--gold);
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
             color: var(--gold);
-            padding: 0.8rem 1.5rem;
+            padding: 1rem 2rem;
             cursor: pointer;
-            font-family: 'Philosopher', serif;
+            font-family: 'Cinzel', serif;
             transition: all 0.3s;
+            border-radius: 4px;
+            letter-spacing: 1px;
         }
 
         .chapter-nav-btn:hover:not(:disabled) {
-            background: var(--gold);
-            color: var(--bg-dark);
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--gold);
+            box-shadow: 0 0 20px var(--gold-glow);
+            transform: translateY(-2px);
         }
 
         .chapter-nav-btn:disabled {
@@ -363,29 +632,40 @@
             cursor: not-allowed;
         }
 
-        /* Прогресс */
+        /* Progress bar */
         .progress-bar {
             position: fixed;
-            top: 60px;
+            top: 65px;
             left: 0;
             right: 0;
             height: 3px;
-            background: rgba(201, 162, 39, 0.2);
+            background: rgba(212, 175, 55, 0.1);
             z-index: 99;
         }
 
         .progress-fill {
             height: 100%;
-            background: var(--gold);
+            background: linear-gradient(90deg, var(--purple), var(--gold), var(--cyan));
             width: 0%;
             transition: width 0.3s;
+            box-shadow: 0 0 10px var(--gold-glow);
         }
 
-        /* Мобильные */
+        /* Reading time indicator */
+        .reading-time {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+
+        /* Mobile */
         @media (max-width: 768px) {
             .nav-title {
                 font-size: 1rem;
-                letter-spacing: 1px;
+                letter-spacing: 2px;
             }
 
             .main {
@@ -401,22 +681,38 @@
             }
 
             .cover h1 {
-                font-size: 2rem;
-                letter-spacing: 3px;
+                font-size: 2.2rem;
+                letter-spacing: 4px;
             }
 
             .cover h2 {
                 font-size: 1.2rem;
             }
 
+            .cover-symbol {
+                font-size: 5rem;
+            }
+
             .chapter-title {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
+            }
+
+            .cover-stats {
+                gap: 1.5rem;
+            }
+
+            .chapter-content table {
+                font-size: 0.85rem;
+            }
+
+            .chapter-content th, .chapter-content td {
+                padding: 0.6rem 0.8rem;
             }
         }
 
-        /* Скроллбар */
+        /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
 
         ::-webkit-scrollbar-track {
@@ -424,21 +720,30 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--gold);
-            border-radius: 4px;
+            background: linear-gradient(180deg, var(--purple), var(--gold));
+            border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--gold-light);
+            background: linear-gradient(180deg, var(--gold), var(--purple));
+        }
+
+        /* Selection */
+        ::selection {
+            background: var(--gold);
+            color: var(--bg-dark);
         }
     </style>
 </head>
 <body>
+    <div class="magic-bg"></div>
+    <div class="particles" id="particles"></div>
+
     <nav class="nav">
-        <a href="#" class="nav-title" onclick="showCover(); return false;">CLAVICULA NOVA</a>
+        <a href="#" class="nav-title" onclick="showCover(); return false;">✧ CLAVICULA NOVA ✧</a>
         <div class="nav-controls">
-            <button class="nav-btn" onclick="toggleSidebar()">Оглавление</button>
-            <button class="nav-btn" onclick="toggleTheme()">Тема</button>
+            <button class="nav-btn" onclick="toggleSidebar()">☰ Оглавление</button>
+            <span class="reading-time" id="readingTime"></span>
         </div>
     </nav>
 
@@ -448,22 +753,38 @@
 
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h2>ОГЛАВЛЕНИЕ</h2>
+            <h2>☽ ОГЛАВЛЕНИЕ ☾</h2>
+            <input type="text" class="toc-search" id="tocSearch" placeholder="Поиск главы..." oninput="filterTOC(this.value)">
         </div>
         <ul class="toc-list" id="toc"></ul>
     </aside>
 
     <main class="main" id="main">
-        <!-- Обложка -->
         <section class="cover" id="cover">
-            <div class="cover-symbol">&#9733;</div>
+            <svg class="cover-pentagram" viewBox="0 0 100 100">
+                <polygon points="50,5 61,40 97,40 68,62 79,97 50,75 21,97 32,62 3,40 39,40" fill="none" stroke="currentColor" stroke-width="0.5" style="color: var(--gold)"/>
+            </svg>
+            <div class="cover-symbol">🔑</div>
             <h1>CLAVICULA NOVA</h1>
             <h2>Ключ Живого Огня</h2>
-            <p class="cover-tagline">Гримуар для эпохи сетей</p>
-            <button class="cover-btn" onclick="startReading()">Начать чтение</button>
+            <p class="cover-tagline">Гримуар для эпохи сетей — синтез древней мудрости и современного понимания</p>
+            <div class="cover-stats">
+                <div class="cover-stat">
+                    <span class="cover-stat-num" id="chapterCount">314</span>
+                    <span class="cover-stat-label">ГЛАВ</span>
+                </div>
+                <div class="cover-stat">
+                    <span class="cover-stat-num">123K</span>
+                    <span class="cover-stat-label">СЛОВ</span>
+                </div>
+                <div class="cover-stat">
+                    <span class="cover-stat-num">∞</span>
+                    <span class="cover-stat-label">ЗНАНИЯ</span>
+                </div>
+            </div>
+            <button class="cover-btn" onclick="startReading()">⚡ НАЧАТЬ ЧТЕНИЕ ⚡</button>
         </section>
 
-        <!-- Контейнер глав -->
         <div id="chapters-container"></div>
     </main>
 
@@ -472,117 +793,215 @@
         let currentChapter = -1;
         let sidebarOpen = false;
 
-        // Загрузка книги
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                if (Math.random() > 0.7) {
+                    particle.style.background = 'var(--purple)';
+                    particle.style.boxShadow = '0 0 10px var(--purple-glow)';
+                }
+                container.appendChild(particle);
+            }
+        }
+
+        // Load book
         async function loadBook() {
             try {
                 const response = await fetch('book.json');
                 book = await response.json();
                 renderTOC();
-                console.log(`Загружено ${book.chapters.length} глав`);
+                document.getElementById('chapterCount').textContent = book.chapters.length;
+                console.log(`Loaded ${book.chapters.length} chapters`);
             } catch (e) {
-                console.error('Ошибка загрузки книги:', e);
-                document.getElementById('cover').innerHTML += '<p style="color: #8b3a3a; margin-top: 2rem;">Ошибка загрузки книги. Проверьте book.json</p>';
+                console.error('Error loading book:', e);
+                document.getElementById('cover').innerHTML += '<p style="color: var(--red); margin-top: 2rem;">Ошибка загрузки. Проверьте book.json</p>';
             }
         }
 
-        // Рендер оглавления
+        // Render TOC
         function renderTOC() {
             const toc = document.getElementById('toc');
             toc.innerHTML = book.chapters.map((ch, i) => `
-                <li class="toc-item" data-chapter="${i}" onclick="goToChapter(${i})">
-                    <span class="toc-item-num">${ch.id}.</span>
-                    ${truncate(ch.title, 40)}
+                <li class="toc-item" data-chapter="${i}" data-title="${ch.title.toLowerCase()}" onclick="goToChapter(${i})">
+                    <span class="toc-item-num">${ch.id}</span>
+                    ${truncate(ch.title, 35)}
                 </li>
             `).join('');
         }
 
         function truncate(str, len) {
-            return str.length > len ? str.substring(0, len) + '...' : str;
+            return str.length > len ? str.substring(0, len) + '…' : str;
         }
 
-        // Markdown to HTML
+        // Filter TOC
+        function filterTOC(query) {
+            const items = document.querySelectorAll('.toc-item');
+            const q = query.toLowerCase();
+            items.forEach(item => {
+                const title = item.dataset.title;
+                item.style.display = title.includes(q) ? 'block' : 'none';
+            });
+        }
+
+        // Markdown to HTML with proper TABLE support
         function md2html(md) {
             if (!md) return '';
 
-            return md
-                // Заголовки
-                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-                // Жирный и курсив
-                .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
-                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.+?)\*/g, '<em>$1</em>')
-                // Код
-                .replace(/`(.+?)`/g, '<code>$1</code>')
-                // Цитаты
-                .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-                // Списки
-                .replace(/^- (.+)$/gm, '<li>$1</li>')
-                .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
-                // Таблицы (упрощённо)
-                .replace(/\|(.+)\|/g, (match, content) => {
-                    const cells = content.split('|').map(c => c.trim());
-                    if (cells.every(c => c.match(/^-+$/))) return '';
-                    return '<tr>' + cells.map(c => `<td>${c}</td>`).join('') + '</tr>';
-                })
-                // Горизонтальная линия
-                .replace(/^---+$/gm, '<hr>')
-                // Параграфы
-                .replace(/\n\n/g, '</p><p>')
-                .replace(/^(?!<)(.+)$/gm, '<p>$1</p>')
-                // Очистка пустых
-                .replace(/<p><\/p>/g, '')
-                .replace(/<p>(<[hul])/g, '$1')
-                .replace(/(<\/[hul][^>]*>)<\/p>/g, '$1');
+            let html = md;
+
+            // Process tables FIRST (before other transformations)
+            html = html.replace(/(\|.+\|[\r\n]+)+/g, (tableMatch) => {
+                const rows = tableMatch.trim().split('\n').filter(r => r.trim());
+                if (rows.length < 2) return tableMatch;
+
+                let tableHtml = '<table>';
+                let isHeader = true;
+
+                rows.forEach((row, index) => {
+                    // Skip separator row (|---|---|)
+                    if (row.match(/^\|[\s\-:]+\|$/)) {
+                        isHeader = false;
+                        return;
+                    }
+
+                    const cells = row.split('|').filter((c, i, arr) => i > 0 && i < arr.length - 1);
+
+                    if (isHeader && index === 0) {
+                        tableHtml += '<thead><tr>';
+                        cells.forEach(cell => {
+                            tableHtml += `<th>${cell.trim()}</th>`;
+                        });
+                        tableHtml += '</tr></thead><tbody>';
+                    } else {
+                        tableHtml += '<tr>';
+                        cells.forEach(cell => {
+                            tableHtml += `<td>${cell.trim()}</td>`;
+                        });
+                        tableHtml += '</tr>';
+                    }
+                });
+
+                tableHtml += '</tbody></table>';
+                return tableHtml;
+            });
+
+            // Headers
+            html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+            html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+            html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+
+            // Bold and italic
+            html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+            // Code
+            html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+            html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+            // Blockquotes
+            html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+            // Merge consecutive blockquotes
+            html = html.replace(/<\/blockquote>\s*<blockquote>/g, '<br>');
+
+            // Lists
+            html = html.replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>');
+            html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+
+            // Wrap consecutive li in ul
+            html = html.replace(/(<li>[\s\S]*?<\/li>)(?=\s*<li>|$)/g, (match) => {
+                if (!match.includes('<ul>')) {
+                    return '<ul>' + match + '</ul>';
+                }
+                return match;
+            });
+            // Merge consecutive ul
+            html = html.replace(/<\/ul>\s*<ul>/g, '');
+
+            // Horizontal rule
+            html = html.replace(/^---+$/gm, '<hr>');
+
+            // Paragraphs - split by double newlines
+            const blocks = html.split(/\n\n+/);
+            html = blocks.map(block => {
+                block = block.trim();
+                if (!block) return '';
+                // Don't wrap if already has block element
+                if (block.match(/^<(h[1-6]|ul|ol|li|blockquote|table|pre|hr|div)/i)) {
+                    return block;
+                }
+                // Single line breaks to <br>
+                block = block.replace(/\n/g, '<br>');
+                return `<p>${block}</p>`;
+            }).join('\n');
+
+            // Clean up
+            html = html.replace(/<p><\/p>/g, '');
+            html = html.replace(/<p>(<[huptbod])/gi, '$1');
+            html = html.replace(/(<\/[huptbod][^>]*>)<\/p>/gi, '$1');
+
+            return html;
         }
 
-        // Показать главу
+        // Go to chapter
         function goToChapter(index) {
             if (!book || index < 0 || index >= book.chapters.length) return;
 
             const chapter = book.chapters[index];
             currentChapter = index;
 
-            // Скрываем обложку
             document.getElementById('cover').style.display = 'none';
+
+            // Calculate reading time
+            const words = chapter.content ? chapter.content.split(/\s+/).length : 0;
+            const readingTime = Math.ceil(words / 200);
 
             const container = document.getElementById('chapters-container');
             container.innerHTML = `
                 <article class="chapter active">
                     <header class="chapter-header">
-                        <div class="chapter-num">Глава ${chapter.id}</div>
+                        <div class="chapter-num">— ГЛАВА ${chapter.id} —</div>
                         <h1 class="chapter-title">${chapter.title}</h1>
+                        <div class="reading-time">☽ ${readingTime} мин. чтения • ${words} слов ☾</div>
                     </header>
                     <div class="chapter-content">
                         ${md2html(chapter.content)}
                     </div>
                     <nav class="chapter-nav">
                         <button class="chapter-nav-btn" onclick="goToChapter(${index - 1})" ${index === 0 ? 'disabled' : ''}>
-                            &larr; Назад
+                            ← Предыдущая
                         </button>
                         <button class="chapter-nav-btn" onclick="goToChapter(${index + 1})" ${index === book.chapters.length - 1 ? 'disabled' : ''}>
-                            Далее &rarr;
+                            Следующая →
                         </button>
                     </nav>
                 </article>
             `;
 
-            // Обновляем TOC
+            // Update TOC
             document.querySelectorAll('.toc-item').forEach((el, i) => {
                 el.classList.toggle('active', i === index);
+                if (i === index) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             });
 
-            // Прогресс
+            // Progress
             const progress = ((index + 1) / book.chapters.length) * 100;
             document.getElementById('progress').style.width = progress + '%';
 
-            // Скролл наверх
-            window.scrollTo(0, 0);
+            // Update reading time in nav
+            document.getElementById('readingTime').textContent = `${index + 1}/${book.chapters.length}`;
 
-            // Закрываем сайдбар на мобильных
-            if (window.innerWidth < 768) {
-                closeSidebar();
-            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (window.innerWidth < 768) closeSidebar();
         }
 
         function showCover() {
@@ -590,6 +1009,7 @@
             document.getElementById('chapters-container').innerHTML = '';
             currentChapter = -1;
             document.getElementById('progress').style.width = '0%';
+            document.getElementById('readingTime').textContent = '';
         }
 
         function startReading() {
@@ -597,11 +1017,9 @@
         }
 
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const main = document.getElementById('main');
             sidebarOpen = !sidebarOpen;
-            sidebar.classList.toggle('open', sidebarOpen);
-            main.classList.toggle('sidebar-open', sidebarOpen);
+            document.getElementById('sidebar').classList.toggle('open', sidebarOpen);
+            document.getElementById('main').classList.toggle('sidebar-open', sidebarOpen);
         }
 
         function closeSidebar() {
@@ -610,19 +1028,17 @@
             document.getElementById('main').classList.remove('sidebar-open');
         }
 
-        function toggleTheme() {
-            // Можно добавить светлую тему
-            alert('Тёмная тема — единственно верная для гримуара.');
-        }
-
-        // Горячие клавиши
+        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') goToChapter(currentChapter - 1);
-            if (e.key === 'ArrowRight') goToChapter(currentChapter + 1);
+            if (e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft' || e.key === 'a') goToChapter(currentChapter - 1);
+            if (e.key === 'ArrowRight' || e.key === 'd') goToChapter(currentChapter + 1);
             if (e.key === 'Escape') closeSidebar();
+            if (e.key === 't' || e.key === 'о') toggleSidebar();
         });
 
-        // Старт
+        // Init
+        createParticles();
         loadBook();
     </script>
 </body>
