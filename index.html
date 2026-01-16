@@ -729,6 +729,128 @@
             }
         }
 
+        /* Image Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+            padding: 2rem;
+            max-width: 1000px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+            box-shadow:
+                0 0 30px var(--gold-glow),
+                0 10px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow:
+                0 0 50px var(--gold-glow),
+                0 0 80px rgba(123, 94, 167, 0.3),
+                0 20px 60px rgba(0, 0, 0, 0.5);
+            border-color: var(--gold);
+            z-index: 10;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: var(--gold);
+            letter-spacing: 1px;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-item-label {
+            transform: translateY(0);
+        }
+
+        .gallery-title {
+            font-family: 'Cinzel', serif;
+            color: var(--silver);
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            box-shadow:
+                0 0 100px var(--gold-glow),
+                0 30px 80px rgba(0, 0, 0, 0.6);
+            animation: lightboxIn 0.4s ease;
+        }
+
+        @keyframes lightboxIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2rem;
+            color: var(--gold);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.2) rotate(90deg);
+        }
+
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
@@ -757,6 +879,12 @@
 <body>
     <div class="magic-bg"></div>
     <div class="particles" id="particles"></div>
+
+    <!-- Lightbox for images -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">✕</span>
+        <img src="" alt="Illustration" id="lightboxImg">
+    </div>
 
     <nav class="nav">
         <a href="#" class="nav-title" onclick="showCover(); return false;">✧ CLAVICULA NOVA ✧</a>
@@ -803,6 +931,46 @@
                 </div>
             </div>
             <button class="cover-btn" onclick="startReading()">⚡ НАЧАТЬ ЧТЕНИЕ ⚡</button>
+
+            <h3 class="gallery-title">✧ Иллюстрации Гримуара ✧</h3>
+            <div class="gallery">
+                <div class="gallery-item" onclick="openLightbox('images/upper_realm.png')">
+                    <img src="images/upper_realm.png" alt="Верхний Мир" loading="lazy">
+                    <div class="gallery-item-label">Верхний Мир</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox('images/middle_realm.png')">
+                    <img src="images/middle_realm.png" alt="Средний Мир" loading="lazy">
+                    <div class="gallery-item-label">Средний Мир</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox('images/lower_realm.png')">
+                    <img src="images/lower_realm.png" alt="Нижний Мир" loading="lazy">
+                    <div class="gallery-item-label">Нижний Мир</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox('images/sun_force.png')">
+                    <img src="images/sun_force.png" alt="Сила Солнца" loading="lazy">
+                    <div class="gallery-item-label">Сила Солнца</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox('images/moon_force.png')">
+                    <img src="images/moon_force.png" alt="Сила Луны" loading="lazy">
+                    <div class="gallery-item-label">Сила Луны</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox('images/archangel.png')">
+                    <img src="images/archangel.png" alt="Архангел Михаил" loading="lazy">
+                    <div class="gallery-item-label">Архангел Михаил</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox('images/pentacle.png')">
+                    <img src="images/pentacle.png" alt="Пентакль Соломона" loading="lazy">
+                    <div class="gallery-item-label">Пентакль Соломона</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox('images/tarot_spread.png')">
+                    <img src="images/tarot_spread.png" alt="Расклад Таро" loading="lazy">
+                    <div class="gallery-item-label">Расклад Таро</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox('images/crystals.png')">
+                    <img src="images/crystals.png" alt="Магические Кристаллы" loading="lazy">
+                    <div class="gallery-item-label">Магические Кристаллы</div>
+                </div>
+            </div>
         </section>
 
         <div id="chapters-container"></div>
@@ -1057,9 +1225,26 @@
             if (e.key === 't' || e.key === 'о') toggleSidebar();
         });
 
+        // Lightbox functions
+        function openLightbox(src) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
         // Init
         createParticles();
         loadBook();
+
+        // Close lightbox on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
     </script>
 </body>
 </html>
