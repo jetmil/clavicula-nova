@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLAVICULA NOVA — Ключ Живого Огня</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Philosopher:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-hover: #1a1a25;
+            --gold: #c9a227;
+            --gold-light: #e6c85a;
+            --silver: #a8b5c4;
+            --text: #d4d4dc;
+            --text-dim: #8a8a9a;
+            --purple: #6b4c9a;
+            --red: #8b3a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.8;
+            font-size: 18px;
+        }
+
+        /* Магический фон */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(107, 76, 154, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(201, 162, 39, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(139, 58, 58, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Навигация */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+            padding: 1rem 2rem;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-family: 'Philosopher', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-family: 'Philosopher', serif;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: var(--gold);
+            color: var(--bg-dark);
+        }
+
+        /* Боковая панель - оглавление */
+        .sidebar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            bottom: 0;
+            width: 320px;
+            background: var(--bg-card);
+            border-right: 1px solid rgba(201, 162, 39, 0.2);
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 90;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .sidebar-header h2 {
+            font-family: 'Philosopher', serif;
+            color: var(--gold);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0.5rem 0;
+        }
+
+        .toc-item {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .toc-item:hover {
+            background: var(--bg-hover);
+            border-left-color: var(--gold);
+        }
+
+        .toc-item.active {
+            background: rgba(201, 162, 39, 0.1);
+            border-left-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .toc-item-num {
+            color: var(--text-dim);
+            margin-right: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        /* Основной контент */
+        .main {
+            margin-top: 60px;
+            padding: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .main.sidebar-open {
+            margin-left: 320px;
+        }
+
+        /* Обложка */
+        .cover {
+            text-align: center;
+            padding: 4rem 2rem;
+            min-height: calc(100vh - 60px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cover-symbol {
+            font-size: 5rem;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 30px rgba(201, 162, 39, 0.5);
+        }
+
+        .cover h1 {
+            font-family: 'Philosopher', serif;
+            font-size: 3.5rem;
+            color: var(--gold);
+            letter-spacing: 8px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .cover h2 {
+            font-family: 'Philosopher', serif;
+            font-size: 1.8rem;
+            color: var(--silver);
+            letter-spacing: 4px;
+            margin-bottom: 2rem;
+        }
+
+        .cover-tagline {
+            font-style: italic;
+            color: var(--text-dim);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .cover-btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Philosopher', serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .cover-btn:hover {
+            background: var(--gold);
+            color: var(--bg-dark);
+            box-shadow: 0 0 30px rgba(201, 162, 39, 0.4);
+        }
+
+        /* Глава */
+        .chapter {
+            display: none;
+        }
+
+        .chapter.active {
+            display: block;
+        }
+
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .chapter-num {
+            font-family: 'Philosopher', serif;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-title {
+            font-family: 'Philosopher', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+        }
+
+        .chapter-content {
+            text-align: justify;
+        }
+
+        .chapter-content h2 {
+            font-family: 'Philosopher', serif;
+            color: var(--gold-light);
+            font-size: 1.5rem;
+            margin: 2.5rem 0 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .chapter-content h3 {
+            font-family: 'Philosopher', serif;
+            color: var(--silver);
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .chapter-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .chapter-content blockquote {
+            border-left: 3px solid var(--gold);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--silver);
+        }
+
+        .chapter-content ul, .chapter-content ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .chapter-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .chapter-content th, .chapter-content td {
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .chapter-content th {
+            background: rgba(201, 162, 39, 0.1);
+            color: var(--gold);
+        }
+
+        .chapter-content code {
+            background: var(--bg-hover);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+
+        .chapter-content hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 2rem 0;
+        }
+
+        /* Навигация по главам */
+        .chapter-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .chapter-nav-btn {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-family: 'Philosopher', serif;
+            transition: all 0.3s;
+        }
+
+        .chapter-nav-btn:hover:not(:disabled) {
+            background: var(--gold);
+            color: var(--bg-dark);
+        }
+
+        .chapter-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Прогресс */
+        .progress-bar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(201, 162, 39, 0.2);
+            z-index: 99;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* Мобильные */
+        @media (max-width: 768px) {
+            .nav-title {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+
+            .main {
+                padding: 1.5rem;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .main.sidebar-open {
+                margin-left: 0;
+            }
+
+            .cover h1 {
+                font-size: 2rem;
+                letter-spacing: 3px;
+            }
+
+            .cover h2 {
+                font-size: 1.2rem;
+            }
+
+            .chapter-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gold-light);
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="#" class="nav-title" onclick="showCover(); return false;">CLAVICULA NOVA</a>
+        <div class="nav-controls">
+            <button class="nav-btn" onclick="toggleSidebar()">Оглавление</button>
+            <button class="nav-btn" onclick="toggleTheme()">Тема</button>
+        </div>
+    </nav>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+    </div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>ОГЛАВЛЕНИЕ</h2>
+        </div>
+        <ul class="toc-list" id="toc"></ul>
+    </aside>
+
+    <main class="main" id="main">
+        <!-- Обложка -->
+        <section class="cover" id="cover">
+            <div class="cover-symbol">&#9733;</div>
+            <h1>CLAVICULA NOVA</h1>
+            <h2>Ключ Живого Огня</h2>
+            <p class="cover-tagline">Гримуар для эпохи сетей</p>
+            <button class="cover-btn" onclick="startReading()">Начать чтение</button>
+        </section>
+
+        <!-- Контейнер глав -->
+        <div id="chapters-container"></div>
+    </main>
+
+    <script>
+        let book = null;
+        let currentChapter = -1;
+        let sidebarOpen = false;
+
+        // Загрузка книги
+        async function loadBook() {
+            try {
+                const response = await fetch('book.json');
+                book = await response.json();
+                renderTOC();
+                console.log(`Загружено ${book.chapters.length} глав`);
+            } catch (e) {
+                console.error('Ошибка загрузки книги:', e);
+                document.getElementById('cover').innerHTML += '<p style="color: #8b3a3a; margin-top: 2rem;">Ошибка загрузки книги. Проверьте book.json</p>';
+            }
+        }
+
+        // Рендер оглавления
+        function renderTOC() {
+            const toc = document.getElementById('toc');
+            toc.innerHTML = book.chapters.map((ch, i) => `
+                <li class="toc-item" data-chapter="${i}" onclick="goToChapter(${i})">
+                    <span class="toc-item-num">${ch.id}.</span>
+                    ${truncate(ch.title, 40)}
+                </li>
+            `).join('');
+        }
+
+        function truncate(str, len) {
+            return str.length > len ? str.substring(0, len) + '...' : str;
+        }
+
+        // Markdown to HTML
+        function md2html(md) {
+            if (!md) return '';
+
+            return md
+                // Заголовки
+                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                // Жирный и курсив
+                .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                // Код
+                .replace(/`(.+?)`/g, '<code>$1</code>')
+                // Цитаты
+                .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
+                // Списки
+                .replace(/^- (.+)$/gm, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
+                // Таблицы (упрощённо)
+                .replace(/\|(.+)\|/g, (match, content) => {
+                    const cells = content.split('|').map(c => c.trim());
+                    if (cells.every(c => c.match(/^-+$/))) return '';
+                    return '<tr>' + cells.map(c => `<td>${c}</td>`).join('') + '</tr>';
+                })
+                // Горизонтальная линия
+                .replace(/^---+$/gm, '<hr>')
+                // Параграфы
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/^(?!<)(.+)$/gm, '<p>$1</p>')
+                // Очистка пустых
+                .replace(/<p><\/p>/g, '')
+                .replace(/<p>(<[hul])/g, '$1')
+                .replace(/(<\/[hul][^>]*>)<\/p>/g, '$1');
+        }
+
+        // Показать главу
+        function goToChapter(index) {
+            if (!book || index < 0 || index >= book.chapters.length) return;
+
+            const chapter = book.chapters[index];
+            currentChapter = index;
+
+            // Скрываем обложку
+            document.getElementById('cover').style.display = 'none';
+
+            const container = document.getElementById('chapters-container');
+            container.innerHTML = `
+                <article class="chapter active">
+                    <header class="chapter-header">
+                        <div class="chapter-num">Глава ${chapter.id}</div>
+                        <h1 class="chapter-title">${chapter.title}</h1>
+                    </header>
+                    <div class="chapter-content">
+                        ${md2html(chapter.content)}
+                    </div>
+                    <nav class="chapter-nav">
+                        <button class="chapter-nav-btn" onclick="goToChapter(${index - 1})" ${index === 0 ? 'disabled' : ''}>
+                            &larr; Назад
+                        </button>
+                        <button class="chapter-nav-btn" onclick="goToChapter(${index + 1})" ${index === book.chapters.length - 1 ? 'disabled' : ''}>
+                            Далее &rarr;
+                        </button>
+                    </nav>
+                </article>
+            `;
+
+            // Обновляем TOC
+            document.querySelectorAll('.toc-item').forEach((el, i) => {
+                el.classList.toggle('active', i === index);
+            });
+
+            // Прогресс
+            const progress = ((index + 1) / book.chapters.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+
+            // Скролл наверх
+            window.scrollTo(0, 0);
+
+            // Закрываем сайдбар на мобильных
+            if (window.innerWidth < 768) {
+                closeSidebar();
+            }
+        }
+
+        function showCover() {
+            document.getElementById('cover').style.display = 'flex';
+            document.getElementById('chapters-container').innerHTML = '';
+            currentChapter = -1;
+            document.getElementById('progress').style.width = '0%';
+        }
+
+        function startReading() {
+            goToChapter(0);
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const main = document.getElementById('main');
+            sidebarOpen = !sidebarOpen;
+            sidebar.classList.toggle('open', sidebarOpen);
+            main.classList.toggle('sidebar-open', sidebarOpen);
+        }
+
+        function closeSidebar() {
+            sidebarOpen = false;
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('main').classList.remove('sidebar-open');
+        }
+
+        function toggleTheme() {
+            // Можно добавить светлую тему
+            alert('Тёмная тема — единственно верная для гримуара.');
+        }
+
+        // Горячие клавиши
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') goToChapter(currentChapter - 1);
+            if (e.key === 'ArrowRight') goToChapter(currentChapter + 1);
+            if (e.key === 'Escape') closeSidebar();
+        });
+
+        // Старт
+        loadBook();
+    </script>
+</body>
+</html>
